@@ -78,9 +78,11 @@ def aggregate():
                 break
         if len(pageviews):
             sys.stdout.write("working on {} pageviews\n".format(len(pageviews)))
+            sys.stdout.write("{}\n".format(pageviews))
             gevent.spawn(send_pageviews, pageviews, timestamp)
         if len(trends):
             sys.stdout.write("working on {} trends\n".format(len(trends)))
+            sys.stdout.write("{}\n".format(trends))
             gevent.spawn(send_trends, trends, timestamp)
 
 
@@ -126,6 +128,8 @@ def send_pageviews(pageviews, timestamp):
         command = "INSERT INTO {}_pageviews(path, date, count) VALUES ".format(site)
         command += "(%(path)s, %(date)s, %(count)s);"
         try:
+            sys.stdout.write("{}\n".format(command))
+            sys.stdout.write("{}\n".format(values))
             res = cursor.executemany(command, values)
             sys.stdout.write("execute pageviews: {}\n".format(res))
         except Exception as e:
@@ -141,6 +145,8 @@ def send_trends(trends, timestamp):
         command = "INSERT INTO {}_trends(content_id, date, count) VALUES ".format(site)
         command += "(%(content_id)s, %(date)s, %(count)s);"
         try:
+            sys.stdout.write("{}\n".format(command))
+            sys.stdout.write("{}\n".format(values))
             res = cursor.executemany(command, values)
             sys.stdout.write("execute trends: {}\n".format(res))
         except Exception as e:
