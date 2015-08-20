@@ -140,7 +140,7 @@ def send_trends(trends, timestamp):
         values = []
         for (content_id, count) in trends:
             values.append({"content_id": content_id, "stamp": timestamp, "value": count})
-        command = "INSERT INTO{}_trends(content_id, stamp, value) VALUES ".format(site)
+        command = "INSERT INTO {}_trends(content_id, stamp, value) VALUES ".format(site)
         command += "(%(content_id)s, %(stamp)s, %(value)s);"
         try:
             res = cursor.executemany(command, values)
