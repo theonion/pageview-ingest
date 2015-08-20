@@ -9,7 +9,7 @@ import os
 import time
 
 import gevent
-from gevent.queue import Queue
+from gevent.queue import Queue, Empty as QueueEmpty
 import pytz
 import psycopg2
 import psycopg2.extras
@@ -67,7 +67,7 @@ def aggregate():
                 pageviews[(host, pathname)] += 1
                 if content_id:
                     trends[(host, content_id)] += 1
-            except queue.Empty:
+            except QueueEmpty:
                 break
             except Exception as e:
                 logger.exception(e)
