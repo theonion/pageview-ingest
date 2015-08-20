@@ -6,6 +6,7 @@ from collections import Counter
 from datetime import datetime
 import logging
 import os
+import sys
 import time
 
 import gevent
@@ -73,8 +74,10 @@ def aggregate():
                 logger.exception(e)
                 break
         if len(pageviews):
+            sys.stdout.write("working on {} pageviews\n".format(len(pageviews)))
             gevent.spawn(send_pageviews, pageviews, timestamp)
         if len(trends):
+            sys.stdout.write("working on {} trends\n".format(len(trends)))
             gevent.spawn(send_trends, trends, timestamp)
 
 
@@ -121,7 +124,8 @@ def send_pageviews(pageviews, timestamp):
         command = "INSERT INTO {}_pageviews(path, stamp, value) VALUES ".format(site)
         command += "(%(path)s, %(stamp)s, %(value)s);"
         try:
-            cursor.executemany(command, values)
+            res = cursor.executemany(command, values)
+            sys.stdout.write("execute pageviews: {}\n".format(res))
         except Exception as e:
             logger.exception(e)
 
@@ -135,7 +139,8 @@ def send_trends(trends, timestamp):
         command = "INSERT INTO{}_trends(content_id, stamp, value) VALUES ".format(site)
         command += "(%(content_id)s, %(stamp)s, %(value)s);"
         try:
-            cursor.executemany(command, values)
+            res = cursor.executemany(command, values)
+            sys.stdout.write("execute trends: {}\n".format(res))
         except Exception as e:
             logger.exception(e)
 
