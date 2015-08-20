@@ -8,13 +8,12 @@
     - name: make sure that vagrant has the right permissions
       lineinfile: 'dest=/etc/sudoers regexp="vagrant ALL=(ALL) NOPASSWD: ALL" line="vagrant ALL=(ALL) NOPASSWD: ALL"'
 
-    - name: install git
-      apt: name=git state=present
-
   roles:
     - postgresql
 
     - uwsgi-emperor
+
+    - avahi
 
     - role: uwsgi-python-app
       app_name: pageview_ingest
@@ -22,14 +21,14 @@
         - "libpq-dev"
         - "git-core"
       python_packages:
-        - "git+https://github.com/theonion/pageview-ingest.git#pageview_ingest"
+        - "git+https://github.com/theonion/pageview-ingest.git#egg=pageview_ingest"
       env_vars:
         - "INGEST_DB_HOST=localhost"
         - "INGEST_DB_PORT=5432"
         - "INGEST_DB_USER=ingest"
         - "INGEST_DB_PASSWD=ingest"
         - "INGEST_DB_DBNAME=ingest"
-      uesgi:
+      uwsgi:
         module: "pageview_ingest.wsgi:application"
         http: "{{ ansible_eth0.ipv4.address }}:80"
         master: yes
@@ -37,6 +36,9 @@
       app_enabled: yes
 
   post_tasks:
+    - name: install pysycopg2
+      apt: name=python-psycopg2 state=present
+
     - name: creating psql user
       postgresql_user: name=ingest password=ingest encrypted=yes role_attr_flags=CREATEDB,NOSUPERUSER
       sudo_user: postgres
@@ -46,16 +48,13 @@
       sudo_user: postgres
 
     - name: copy table script
-      template: src=files/tables.sql dest=/var/
+      template: src=files/tables.sql dest=/var/tables.sql
 
     - name: execute table script
-      shell: "psql -qAtw -f /var/tables.sql"
+      shell: "export PGPASSWORD=ingest; psql -U ingest -h localhost -d ingest < /var/tables.sql;"
 
     - name: install libcap to enable uwsgi to bind to port 80
       apt: name=libcap2-bin state=present
 
     - name: bind uwsgi to port 80
       command: setcap 'cap_net_bind_service=+ep' /usr/local/bin/uwsgi
-
-    - name: install curl
-      apt: name=curl state=present

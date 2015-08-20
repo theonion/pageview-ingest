@@ -1,58 +1,58 @@
-CREATE TABLE IF NOT EXISTS ingest.theonion_pageviews (
+CREATE TABLE IF NOT EXISTS theonion_pageviews (
   path    VARCHAR (512) NOT NULL,
   stamp   TIMESTAMP NOT NULL,
   value   INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.avclub_pageviews (
+CREATE TABLE IF NOT EXISTS avclub_pageviews (
   path    VARCHAR (512) NOT NULL,
   stamp   TIMESTAMP NOT NULL,
   value   INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.clickhole_pageviews (
+CREATE TABLE IF NOT EXISTS clickhole_pageviews (
   path    VARCHAR (512) NOT NULL,
   stamp   TIMESTAMP NOT NULL,
   value   INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.onionstudios_pageviews (
+CREATE TABLE IF NOT EXISTS onionstudios_pageviews (
   path    VARCHAR (512) NOT NULL,
   stamp   TIMESTAMP NOT NULL,
   value   INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.starwipe_pageviews (
+CREATE TABLE IF NOT EXISTS starwipe_pageviews (
   path    VARCHAR (512) NOT NULL,
   stamp   TIMESTAMP NOT NULL,
   value   INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.theonion_trends (
+CREATE TABLE IF NOT EXISTS theonion_trends (
   content_id  INTEGER NOT NULL,
   stamp       TIMESTAMP NOT NULL,
   value       INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.avclub_trends (
+CREATE TABLE IF NOT EXISTS avclub_trends (
   content_id  INTEGER NOT NULL,
   stamp       TIMESTAMP NOT NULL,
   value       INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.clickhole_trends (
+CREATE TABLE IF NOT EXISTS clickhole_trends (
   content_id  INTEGER NOT NULL,
   stamp       TIMESTAMP NOT NULL,
   value       INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.onionstudios_trends (
+CREATE TABLE IF NOT EXISTS onionstudios_trends (
   content_id  INTEGER NOT NULL,
   stamp       TIMESTAMP NOT NULL,
   value       INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ingest.starwipe_trends (
+CREATE TABLE IF NOT EXISTS starwipe_trends (
   content_id  INTEGER NOT NULL,
   stamp       TIMESTAMP NOT NULL,
   value       INTEGER NOT NULL

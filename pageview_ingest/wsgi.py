@@ -25,7 +25,7 @@ gif = base64.b64decode("R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEA
 queue = Queue()
 
 logger = logging.getLogger('ingest')
-logger.setLogLevel(logging.INFO)
+logger.setLevel(logging.INFO)
 
 timezone = pytz.timezone('America/Chicago')
 
