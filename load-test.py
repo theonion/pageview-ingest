@@ -39,6 +39,7 @@ while 1:
     host = random.choice(hosts)
     path = random.choice(paths)
     cmd = template.format(host, path)
+    print("\n{}".format(cmd))
     os.system(cmd)
     sleep = random.randrange(100) / 1000.0
     time.sleep(sleep)

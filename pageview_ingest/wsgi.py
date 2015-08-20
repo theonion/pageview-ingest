@@ -122,9 +122,9 @@ def send_pageviews(pageviews, timestamp):
     for site, pageviews in site_pageviews.items():
         values = []
         for (path, count) in pageviews:
-            values.append({"path": path, "stamp": timestamp, "value": count})
-        command = "INSERT INTO {}_pageviews(path, stamp, value) VALUES ".format(site)
-        command += "(%(path)s, %(stamp)s, %(value)s);"
+            values.append({"path": path, "date": timestamp, "count": count})
+        command = "INSERT INTO {}_pageviews(path, date, count) VALUES ".format(site)
+        command += "(%(path)s, %(date)s, %(count)s);"
         try:
             res = cursor.executemany(command, values)
             sys.stdout.write("execute pageviews: {}\n".format(res))
@@ -137,9 +137,9 @@ def send_trends(trends, timestamp):
     for site, trends in site_trends.items():
         values = []
         for (content_id, count) in trends:
-            values.append({"content_id": content_id, "stamp": timestamp, "value": count})
-        command = "INSERT INTO {}_trends(content_id, stamp, value) VALUES ".format(site)
-        command += "(%(content_id)s, %(stamp)s, %(value)s);"
+            values.append({"content_id": content_id, "date": timestamp, "count": count})
+        command = "INSERT INTO {}_trends(content_id, date, count) VALUES ".format(site)
+        command += "(%(content_id)s, %(date)s, %(count)s);"
         try:
             res = cursor.executemany(command, values)
             sys.stdout.write("execute trends: {}\n".format(res))
