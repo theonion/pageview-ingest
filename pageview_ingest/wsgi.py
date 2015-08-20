@@ -7,7 +7,6 @@ from datetime import datetime
 import logging
 import os
 import sys
-import time
 
 import gevent
 from gevent.queue import Queue, Empty as QueueEmpty
@@ -91,8 +90,7 @@ gevent.spawn(aggregate)
 def get_timestamp():
     naive_now = datetime.now()
     central_now = timezone.localize(naive_now)
-    now_tuple = central_now.timetuple()
-    return time.mktime(now_tuple)
+    return central_now.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def get_host(hostname):
