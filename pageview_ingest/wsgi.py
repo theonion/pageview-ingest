@@ -27,6 +27,10 @@ queue = Queue()
 
 logger = logging.getLogger('ingest')
 logger.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 timezone = pytz.timezone('America/Chicago')
 
