@@ -41,8 +41,6 @@ db_port = os.environ.get("INGEST_DB_PORT", "5432")
 db_user = os.environ.get("INGEST_DB_USER", "ingest")
 db_passwd = os.environ.get("INGEST_DB_PASSWD", "ingest")
 db_dbname = os.environ.get("INGEST_DB_DBNAME", "ingest")
-connection = psycopg2.connect(database=db_dbname, user=db_user, password=db_passwd, host=db_host, port=db_port)
-cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
 def aggregate():
@@ -114,6 +112,12 @@ def collate(counter):
     return collated
 
 
+def get_connection_cursor():
+    connection = psycopg2.connect(database=db_dbname, user=db_user, password=db_passwd, host=db_host, port=db_port)
+    cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return connection, cursor
+
+
 def send_pageviews(pageviews, timestamp):
     site_pageviews = collate(pageviews)
     for site, pageviews in site_pageviews.items():
@@ -123,6 +127,7 @@ def send_pageviews(pageviews, timestamp):
         command = "INSERT INTO {}_pageviews(path, date, count) VALUES ".format(site)
         command += "(%(path)s, %(date)s, %(count)s);"
         try:
+            connection, cursor = get_connection_cursor()
             cursor.executemany(command, values)
             connection.commit()
         except Exception as e:
@@ -138,6 +143,7 @@ def send_trends(trends, timestamp):
         command = "INSERT INTO {}_trends(content_id, date, count) VALUES ".format(site)
         command += "(%(content_id)s, %(date)s, %(count)s);"
         try:
+            connection, cursor = get_connection_cursor()
             cursor.executemany(command, values)
             connection.commit()
         except Exception as e:

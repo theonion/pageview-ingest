@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="pageview_ingest",
-    version="0.0.1",
+    version="0.0.2",
 
     packages=["pageview_ingest", ],
     install_requires=["gevent==1.0.2", "psycopg2==2.6.1", "pytz==2015.4", ],
